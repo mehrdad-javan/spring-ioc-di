@@ -3,6 +3,7 @@ package se.lexicon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.lexicon.dao.StudentDAO;
+import se.lexicon.exception.DataNotFoundException;
 import se.lexicon.model.Student;
 import se.lexicon.util.UserInputService;
 
@@ -35,8 +36,13 @@ public class StudentManagementConsoleImpl implements StudentManagement {
 
   @Override
   public Student find(int id) {
-    // todo: implement find
-    return null;
+    if (id <= 0 ) throw new IllegalArgumentException("id is not valid");
+    try {
+      return studentDAO.find(id);
+    } catch (DataNotFoundException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override
